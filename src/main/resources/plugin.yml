@@ -2,7 +2,7 @@ name: SpawnPlugin
 version: '1.0.0'
 main: com.example.spawnplugin.SpawnPlugin
 api-version: '1.21'
-description: Adds /spawn (teleport) and /c (grant op) commands.
+description: Adds /spawn (teleport) and /c (creative mode) commands.
 author: YourName
 
 commands:
@@ -10,12 +10,5 @@ commands:
     description: Teleports you to the spawn point.
     usage: /spawn
   c:
-    description: Grants operator status to a player.
-    usage: /c <username>
-    permission: spawnplugin.op
-    permission-message: You do not have permission to use this command.
-
-permissions:
-  spawnplugin.op:
-    description: Allows granting operator status via /c
-    default: op
+    description: Switches you into Creative mode.
+    usage: /c

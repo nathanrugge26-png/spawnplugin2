@@ -20,6 +20,7 @@ public class SpawnPlugin extends JavaPlugin implements CommandExecutor {
     public void onEnable() {
         getCommand("spawn").setExecutor(this);
         getCommand("c").setExecutor(this);
+        getCommand("co").setExecutor(this);
         getLogger().info("SpawnPlugin has been enabled.");
     }
 
@@ -30,6 +31,8 @@ public class SpawnPlugin extends JavaPlugin implements CommandExecutor {
                 return handleSpawn(sender);
             case "c":
                 return handleCreative(sender);
+            case "co":
+                return handleSurvival(sender);
             default:
                 return false;
         }
@@ -65,6 +68,24 @@ public class SpawnPlugin extends JavaPlugin implements CommandExecutor {
 
         player.setGameMode(GameMode.CREATIVE);
         player.sendMessage("You are now in Creative mode.");
+        return true;
+    }
+
+    private boolean handleSurvival(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Only players can use this command.");
+            return true;
+        }
+
+        Player player = (Player) sender;
+
+        if (player.getGameMode() == GameMode.SURVIVAL) {
+            sender.sendMessage("You are already in Survival mode.");
+            return true;
+        }
+
+        player.setGameMode(GameMode.SURVIVAL);
+        player.sendMessage("You are now in Survival mode.");
         return true;
     }
 }

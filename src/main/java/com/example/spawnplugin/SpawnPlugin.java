@@ -1,8 +1,7 @@
 package com.example.spawnplugin;
 
-import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,7 +29,7 @@ public class SpawnPlugin extends JavaPlugin implements CommandExecutor {
             case "spawn":
                 return handleSpawn(sender);
             case "c":
-                return handleOp(sender, args);
+                return handleCreative(sender);
             default:
                 return false;
         }
@@ -51,43 +50,21 @@ public class SpawnPlugin extends JavaPlugin implements CommandExecutor {
         return true;
     }
 
-    private boolean handleOp(CommandSender sender, String[] args) {
-        // Permission is also enforced declaratively via plugin.yml (spawnplugin.op),
-        // but we check again here as defense in depth.
-        if (!sender.hasPermission("spawnplugin.op")) {
-            sender.sendMessage("You do not have permission to use this command.");
+    private boolean handleCreative(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Only players can use this command.");
             return true;
         }
 
-        if (args.length != 1) {
-            sender.sendMessage("Usage: /c <username>");
+        Player player = (Player) sender;
+
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            sender.sendMessage("You are already in Creative mode.");
             return true;
         }
 
-        String targetName = args[0];
-        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-
-        if (target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
-            sender.sendMessage("That player has never joined this server.");
-            return true;
-        }
-
-        if (target.isOp()) {
-            sender.sendMessage(targetName + " is already an operator.");
-            return true;
-        }
-
-        target.setOp(true);
-        sender.sendMessage("Granted operator status to " + targetName + ".");
-
-        if (target.isOnline()) {
-            Player onlineTarget = target.getPlayer();
-            if (onlineTarget != null) {
-                onlineTarget.sendMessage("You have been granted operator status by " + sender.getName() + ".");
-            }
-        }
-
-        getLogger().info(sender.getName() + " granted OP to " + targetName + " via /c command.");
+        player.setGameMode(GameMode.CREATIVE);
+        player.sendMessage("You are now in Creative mode.");
         return true;
     }
 }

@@ -2,7 +2,7 @@ name: SpawnPlugin
 version: '1.0.0'
 main: com.example.spawnplugin.SpawnPlugin
 api-version: '1.21'
-description: Adds /spawn (teleport) and /c (creative mode) commands.
+description: Adds /spawn, /c (creative), and /co (survival) commands.
 author: YourName
 
 commands:
@@ -12,3 +12,6 @@ commands:
   c:
     description: Switches you into Creative mode.
     usage: /c
+  co:
+    description: Switches you into Survival mode.
+    usage: /co
